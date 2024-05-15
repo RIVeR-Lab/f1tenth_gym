@@ -68,8 +68,8 @@ class RaceCar(object):
         model=DynamicModel.ST,
         is_ego=False,
         time_step=0.01,
-        num_beams=1080,
-        fov=4.7,
+        num_beams=1081,
+        fov=270*np.pi/180.0,
     ):
         """
         TODO rewrite it

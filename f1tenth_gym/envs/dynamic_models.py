@@ -404,10 +404,10 @@ def vehicle_dynamics_st(
 def pid_steer(steer, current_steer, max_sv):
     # steering
     steer_diff = steer - current_steer
-    if np.fabs(steer_diff) > 1e-4:
+    if np.fabs(steer_diff) > .02:
         sv = (steer_diff / np.fabs(steer_diff)) * max_sv
     else:
-        sv = 0.0
+        sv = steer_diff / .02 * max_sv
 
     return sv
 
