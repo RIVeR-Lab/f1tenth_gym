@@ -57,7 +57,7 @@ class F110Env(gym.Env):
             seed (int, default=12345): seed for random state and reproducibility
             map (str, default='vegas'): name of the map used for the environment.
 
-            params (dict, default={'mu': 1.0489, 'C_Sf':, 'C_Sr':, 'lf': 0.15875, 'lr': 0.17145, 'h': 0.074, 'm': 3.74, 'I': 0.04712, 's_min': -0.4189, 's_max': 0.4189, 'sv_min': -3.2, 'sv_max': 3.2, 'v_switch':7.319, 'a_max': 9.51, 'v_min':-5.0, 'v_max': 20.0, 'width': 0.31, 'length': 0.58}): dictionary of vehicle parameters.
+            params (dict, default={'mu': 1.0489, 'C_Sf':, 'C_Sr':, 'lf': 0.15875, 'lr': 0.17145, 'h': 0.074, 'm': 3.74, 'I': 0.04712, 's_min': -0.4189, 's_max': 0.4189, 'sv_min': -3.2, 'sv_max': 3.2, 'v_switch':7.319, 'a_max': 9.51, 'v_min':-5.0, 'v_max': 20.0, 'width': 0.31, 'length': 0.58, 'fov': 4.7, 'num_beams': 1080}): dictionary of vehicle parameters.
             mu: surface friction coefficient
             C_Sf: Cornering stiffness coefficient, front
             C_Sr: Cornering stiffness coefficient, rear
@@ -76,6 +76,8 @@ class F110Env(gym.Env):
             v_max: Maximum longitudinal velocity
             width: width of the vehicle in meters
             length: length of the vehicle in meters
+            fov: field of view of the lidar sensor in radians (float or list[float])
+            num_beams: number of beams in the lidar sensor (int or list[int])
 
             num_agents (int, default=2): number of agents in the environment
 
@@ -134,6 +136,10 @@ class F110Env(gym.Env):
         self.start_rot = np.eye(2)
 
         # initiate stuff
+        if type(self.params["fov"]) is float:
+            self.params["fov"] = [self.params["fov"]] * self.num_agents
+        if type(self.params["num_beams"]) is int:
+            self.params["num_beams"] = [self.params["num_beams"]] * self.num_agents
         self.sim = Simulator(
             self.params,
             self.num_agents,
@@ -223,6 +229,8 @@ class F110Env(gym.Env):
                 "v_max": 20.0,
                 "width": 0.31,
                 "length": 0.58,
+                "fov": 4.7,
+                "num_beams": 1080,
             },
             "num_agents": 2,
             "timestep": 0.01,
