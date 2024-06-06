@@ -151,18 +151,27 @@ class RaceCar(object):
                     else:
                         # between pi/2 and pi
                         to_side = dist_sides / np.cos(angle - np.pi / 2.0)
-                        to_fr = dist_fr / np.sin(angle - np.pi / 2.0)
+                        if angle == np.pi / 2:
+                            to_fr = float('inf')
+                        else:
+                            to_fr = dist_fr / np.sin(angle - np.pi / 2.0)
                         RaceCar.side_distances[i] = min(to_side, to_fr)
                 else:
                     if angle > -np.pi / 2:
                         # between 0 and -pi/2
-                        to_side = dist_sides / np.sin(-angle)
+                        if angle == 0:
+                            to_side = float('inf')
+                        else:
+                            to_side = dist_sides / np.sin(-angle)
                         to_fr = dist_fr / np.cos(-angle)
                         RaceCar.side_distances[i] = min(to_side, to_fr)
                     else:
                         # between -pi/2 and -pi
                         to_side = dist_sides / np.cos(-angle - np.pi / 2)
-                        to_fr = dist_fr / np.sin(-angle - np.pi / 2)
+                        if angle == -np.pi / 2:
+                            to_fr = float('inf')
+                        else:
+                            to_fr = dist_fr / np.sin(-angle - np.pi / 2)
                         RaceCar.side_distances[i] = min(to_side, to_fr)
 
     def update_params(self, params):
